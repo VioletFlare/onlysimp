@@ -1,15 +1,22 @@
 import Phaser from "phaser";
 import sky from '../assets/space3.png'
+import Player from './Player';
 
-class Example extends Phaser.Scene
+class MainScene extends Phaser.Scene
 {
+    player: Player;
+
     preload ()
     {
+        this.player = new Player();
+        this.player.preload(this);
         this.load.image('sky', sky);
     }
 
     create ()
     {
+        this.player.create();
+        /*
         this.add.image(400, 300, 'sky');
 
         const particles = this.add.particles(0, 0, 'red', {
@@ -25,6 +32,11 @@ class Example extends Phaser.Scene
         logo.setCollideWorldBounds(true);
 
         particles.startFollow(logo);
+        */
+    }
+
+    update() {
+        this.player.update();
     }
 }
 
@@ -32,12 +44,9 @@ const config = {
     type: Phaser.AUTO,
     width: 1280,
     height: 900,
-    scene: Example,
+    scene: MainScene,
     physics: {
         default: 'arcade',
-        arcade: {
-            gravity: { y: 200, x: 0 }
-        }
     }
 };
 
