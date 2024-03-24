@@ -26,4 +26,5 @@
  * ```
  */
 
+import './index.css'
 import './game/Game.ts';
