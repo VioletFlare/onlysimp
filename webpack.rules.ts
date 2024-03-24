@@ -28,4 +28,12 @@ export const rules: Required<ModuleOptions>['rules'] = [
       },
     },
   },
+  {
+    test: [/\.vert$/, /\.frag$/],
+    use: "raw-loader"
+  },
+  {
+    test: /\.(gif|png|jpe?g|svg|xml|glsl)$/i,
+    use: "file-loader"
+  }
 ];

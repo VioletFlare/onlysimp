@@ -8,14 +8,6 @@ rules.push(
     test: /\.css$/,
     use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
   }, 
-  {
-    test: [/\.vert$/, /\.frag$/],
-    use: "raw-loader"
-  },
-  {
-    test: /\.(gif|png|jpe?g|svg|xml|glsl)$/i,
-    use: "file-loader"
-  }
 );
 
 export const rendererConfig: Configuration = {
