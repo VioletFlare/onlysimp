@@ -1,11 +1,11 @@
 import girl from '../assets/girl_sprite.png';
 import damagedGirl from '../assets/damaged_girl_sprite.png';
-
-const Vector2 = Phaser.Math.Vector2;
+import BathwaterGun from './BathwaterGun';
 
 class Player {
     scene: Phaser.Scene;
-    sprite: Phaser.GameObjects.Sprite;
+    sprite: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+    bathwaterGun: BathwaterGun;
 
     preload(scene: Phaser.Scene) {
         this.scene = scene;
@@ -14,12 +14,16 @@ class Player {
             frameWidth: 32,
             frameHeight: 48
         })
+
+        this.bathwaterGun = new BathwaterGun();
+        this.bathwaterGun.preload(this.scene)
     }
 
     create() {
-        this.sprite = this.scene.add.sprite(200, 200, "girl");
+        this.sprite = this.scene.physics.add.sprite(200, 200, "girl");
         this.sprite.setOrigin(0.5, 1);
         this.sprite.scale = 2;
+        this.sprite.setCollideWorldBounds(true);
 
         this.sprite.anims.create({
             key: 'walk-down',
@@ -45,10 +49,12 @@ class Player {
             key: 'idle',
             frames: [{ key: 'girl', frame: 0 }]
         })
+
+        this.bathwaterGun.create();
     }
 
-    getPosition(): Phaser.Math.Vector2 {
-        return this.sprite.getBottomCenter();
+    shotBathWaterGun() {
+
     }
 
     update() {

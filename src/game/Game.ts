@@ -11,10 +11,12 @@ class MainScene extends Phaser.Scene
         this.player = new Player();
         this.player.preload(this);
         this.load.image('sky', sky);
+
     }
 
     create ()
     {
+        this.physics.world.setBounds(0, 0, 1280, 900, true, true, true, true)
         this.player.create();
         /*
         this.add.image(400, 300, 'sky');
