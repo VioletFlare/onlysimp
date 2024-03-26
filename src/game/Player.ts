@@ -50,11 +50,15 @@ class Player {
             frames: [{ key: 'girl', frame: 0 }]
         })
 
-        this.bathwaterGun.create();
-    }
+        this.bathwaterGun.create(this);
 
-    shotBathWaterGun() {
+        this.scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+            this.bathwaterGun.shot(pointer.position);
+        })
 
+        this.scene.input.on('pointerup', () => {
+            this.bathwaterGun.stopShooting();
+        })
     }
 
     update() {
@@ -75,6 +79,8 @@ class Player {
         } else {
             this.sprite.anims.play('idle', true)
         }
+
+        this.bathwaterGun.update();
     }
 }
 
