@@ -7,6 +7,7 @@ class BathwaterGun {
     player: Player;
     gunTargetPosition: Phaser.Math.Vector2;
     isShooting: boolean;
+    rect: Phaser.GameObjects.Rectangle;
 
     preload(scene: Phaser.Scene) {
         this.scene = scene;
@@ -20,6 +21,10 @@ class BathwaterGun {
             lifespan: 1400,
             gravityY: 200
         });
+
+        this.rect = new Phaser.GameObjects.Rectangle(this.scene, -9999, 0, 5, 5);
+        this.emitter.startFollow(this.rect);
+
 
         this.player = player;
     }
@@ -37,17 +42,14 @@ class BathwaterGun {
 
     update() {
         if (this.isShooting) {
-            const offset = 20;
-            const emitterY = this.player.sprite.y - offset;
-            const emitterX = this.player.sprite.x - offset;
             const angle = this.getAngle(this.player.sprite.x, this.player.sprite.y, this.gunTargetPosition.x, this.gunTargetPosition.y);
-            this.emitter.setPosition(emitterX, emitterY);
-            this.emitter.setAngle(angle);
+            this.rect.setPosition(this.player.sprite.x, this.player.sprite.y);
+            this.rect.setAngle(angle);
         }
     }
 
     stopShooting() {
-        this.emitter.setPosition(-9999, 0);
+        this.rect.setPosition(-9999, 0);
         this.isShooting = false;
     }
 }

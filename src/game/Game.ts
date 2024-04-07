@@ -49,7 +49,12 @@ const config = {
     scene: MainScene,
     physics: {
         default: 'arcade',
-    }
+        arcade: {
+            debug: isDev
+        }
+    },
+    
+    
 };
 
 const game = new Phaser.Game(config);

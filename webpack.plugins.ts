@@ -16,6 +16,7 @@ export const plugins = [
     "typeof PLUGIN_3D": JSON.stringify(false),
     "typeof PLUGIN_CAMERA3D": JSON.stringify(false),
     "typeof PLUGIN_FBINSTANT": JSON.stringify(false),
-    "typeof FEATURE_SOUND": JSON.stringify(true)
+    "typeof FEATURE_SOUND": JSON.stringify(true),
+    "isDev": process.argv.includes('--dev') ? true : false
   })
 ];
