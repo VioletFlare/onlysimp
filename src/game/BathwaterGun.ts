@@ -8,7 +8,8 @@ class BathwaterGun {
     gunTargetPosition: Phaser.Math.Vector2;
     isShooting: boolean;
     container: Phaser.GameObjects.Container;
-    hitArea: Phaser.GameObjects.Rectangle;
+    hitAreaGroup: Phaser.GameObjects.Group;
+    hitAreaRects: Array<Phaser.GameObjects.Rectangle>;
 
     preload(scene: Phaser.Scene) {
         this.scene = scene;
@@ -25,17 +26,21 @@ class BathwaterGun {
 
         this.container = this.scene.add.container(-9999, 0);
         this.container.add(this.emitter);
+        this.hitAreaRects = [];
 
         this.container.setSize(0, 0);
         
-        const hitAreaRect = new Phaser.GameObjects.Rectangle(this.scene, -20, 0, 230, 35);
+        this.hitAreaGroup = this.scene.add.group();
+
+        for (let i = 0; i < 5; i++) {
+            const rect = new Phaser.GameObjects.Rectangle(this.scene, -9999, 0, 35, 35);
+
+            this.hitAreaRects.push(this.scene.add.existing(rect));
+            this.scene.physics.add.existing(rect);
+            this.hitAreaGroup.add(rect);
+        }
 
         this.container.setVisible(true);
-
-        this.hitArea = this.scene.add.existing(hitAreaRect);
-        this.hitArea = this.scene.physics.add.existing(this.hitArea);
-        this.hitArea.setOrigin(0, 0)
-        this.container.add(this.hitArea);
 
         this.player = player;
     }
@@ -44,6 +49,60 @@ class BathwaterGun {
         const angleDeg = (Math.atan2(targetY - playerY, targetX - playerX) * 180 / Math.PI);
 
         return angleDeg;
+    }
+
+    getAngleRad(playerX: number, playerY: number, targetX: number, targetY: number) {
+        const angleRad = Math.atan2(targetY - playerY, targetX - playerX);
+
+        return angleRad;
+    }
+
+    hideRectGroupBody() {
+        this.hitAreaGroup.setXY(-9999, 0);
+    }
+
+    showRectGroupBody() {
+
+        for (let i = 0; i < this.hitAreaRects.length; i++) {
+            const rect = this.hitAreaRects[i];
+
+            const angle = this.getAngleRad(this.player.sprite.x, this.player.sprite.y, this.gunTargetPosition.x, this.gunTargetPosition.y);
+
+            /*         Q1_1
+            Q4 | Q1   |    o
+            ---|---   |  o
+            Q3 | Q2   |o______Q2_2
+            */
+
+            let x, y;
+
+            if (-Math.PI / 2 <= angle && 0.0 >= angle) {
+                //Q1
+                if (-Math.PI / 2 <= angle && -Math.PI / 4 >= angle) {
+                    //Q1_1
+                    x = this.player.sprite.x + (i * 35) - (i * (35 * (-angle - (Math.PI / 4))));
+                    y = this.player.sprite.y - 30 - (i * 35);
+                } else {
+                    //Q2_2
+                    x = this.player.sprite.x + (i * 35);
+
+                    if (angle < -0.0001) {
+                        y = this.player.sprite.y - 30 + (i * (35 * (angle / (Math.PI / 4))));
+                    } else {
+                        y = this.player.sprite.y - 30;
+                    }
+                }
+
+            } else if (0.0 <= angle && Math.PI / 2 >= angle) {
+                //Q2
+            } else if (Math.PI / 2 <= angle && Math.PI >= angle) {
+                //Q3
+            } else if (-Math.PI / 2 >= angle) {
+                //Q4
+            }
+
+            rect.setPosition(x, y);
+        }
     }
 
     shot(targetPosition: Phaser.Math.Vector2) {
@@ -56,6 +115,9 @@ class BathwaterGun {
             const angle = this.getAngle(this.player.sprite.x, this.player.sprite.y, this.gunTargetPosition.x, this.gunTargetPosition.y);
             this.container.setPosition(this.player.sprite.x, this.player.sprite.y - 30);
             this.container.setAngle(angle - 90);
+            this.showRectGroupBody();
+        } else {
+            this.hideRectGroupBody();
         }
     }
 
