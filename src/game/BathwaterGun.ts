@@ -72,7 +72,7 @@ class BathwaterGun {
             /*         Q1_1
             Q4 | Q1   |    o
             ---|---   |  o
-            Q3 | Q2   |o______Q2_2
+            Q3 | Q2   |o______Q1_2
             */
 
             let x, y;
@@ -81,15 +81,14 @@ class BathwaterGun {
                 //Q1
                 if (-Math.PI / 2 <= angle && -Math.PI / 4 >= angle) {
                     //Q1_1
-                    const offsetX = (i * 27);
-                    x = this.player.sprite.x + offsetX - (i * (35 * (-angle - (Math.PI / 4))));
+                    x = this.player.sprite.x - (i * (35 * (-angle - (Math.PI / 2))));
                     y = this.player.sprite.y - 30 - (i * 35);
                 } else {
-                    //Q2_2
+                    //Q1_2
                     x = this.player.sprite.x + (i * 35);
 
                     if (angle < -0.0001) {
-                        y = this.player.sprite.y - 30 + (i * (35 * (angle / (Math.PI / 4))));
+                        y = this.player.sprite.y - 30 + (i * (35 * (angle / (Math.PI / 2))));
                     } else {
                         y = this.player.sprite.y - 30;
                     }
