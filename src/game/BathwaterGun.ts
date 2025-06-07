@@ -61,6 +61,7 @@ class BathwaterGun {
         this.hitAreaGroup.setXY(-9999, 0);
     }
 
+    //todo: fix the ray when the ray is oblique (45°) and then goes <45°
     showRectGroupBody() {
 
         for (let i = 0; i < this.hitAreaRects.length; i++) {
@@ -80,7 +81,8 @@ class BathwaterGun {
                 //Q1
                 if (-Math.PI / 2 <= angle && -Math.PI / 4 >= angle) {
                     //Q1_1
-                    x = this.player.sprite.x + (i * 35) - (i * (35 * (-angle - (Math.PI / 4))));
+                    const offsetX = (i * 27);
+                    x = this.player.sprite.x + offsetX - (i * (35 * (-angle - (Math.PI / 4))));
                     y = this.player.sprite.y - 30 - (i * 35);
                 } else {
                     //Q2_2
