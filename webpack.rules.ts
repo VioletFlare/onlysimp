@@ -35,5 +35,9 @@ export const rules: Required<ModuleOptions>['rules'] = [
   {
     test: /\.(gif|png|jpe?g|svg|xml|glsl)$/i,
     use: "file-loader"
+  },
+  {
+    test: /.json$/i,
+    use: "json-loader"
   }
 ];
