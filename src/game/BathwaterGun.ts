@@ -21,7 +21,7 @@ class BathwaterGun {
             x: {min: -8, max: 8},
             quantity: 0.5,
             lifespan: 1400,
-            gravityY: 200
+            gravityY: 190
         });
 
         this.container = this.scene.add.container(-9999, 0);
@@ -32,8 +32,8 @@ class BathwaterGun {
         
         this.hitAreaGroup = this.scene.add.group();
 
-        for (let i = 0; i < 5; i++) {
-            const rect = new Phaser.GameObjects.Rectangle(this.scene, -9999, 0, 35, 35);
+        for (let i = 0; i < 6; i++) {
+            const rect = new Phaser.GameObjects.Rectangle(this.scene, -9999, 0, 36, 36);
 
             this.hitAreaRects.push(this.scene.add.existing(rect));
             this.scene.physics.add.existing(rect);
@@ -63,11 +63,17 @@ class BathwaterGun {
 
     showRectGroupBody() {
         const originX = this.player.sprite.x;
-        const originY = this.player.sprite.y - 30;
+        const originY = this.player.sprite.y - 40;
         const angle = this.getAngleRad(originX, originY, this.gunTargetPosition.x, this.gunTargetPosition.y);
-    
-        const step = 35;
-    
+        const angleDeg = this.getAngle(originX, originY, this.gunTargetPosition.x, this.gunTargetPosition.y)
+        const step = 36;
+
+        const xContainer = originX + Math.cos(angle) * 36;
+        const yContainer = originY + Math.sin(angle) * 36;
+
+        this.container.setPosition(xContainer, yContainer);
+        this.container.setAngle(angleDeg - 90);
+
         for (let i = 0; i < this.hitAreaRects.length; i++) {
             const rect = this.hitAreaRects[i];
     
@@ -91,9 +97,6 @@ class BathwaterGun {
 
     update() {
         if (this.isShooting) {
-            const angle = this.getAngle(this.player.sprite.x, this.player.sprite.y, this.gunTargetPosition.x, this.gunTargetPosition.y);
-            this.container.setPosition(this.player.sprite.x, this.player.sprite.y - 15);
-            this.container.setAngle(angle - 89);
             this.showRectGroupBody();
         } else {
             this.hideRectGroupBody();
