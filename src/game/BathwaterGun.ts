@@ -61,48 +61,26 @@ class BathwaterGun {
         this.hitAreaGroup.setXY(-9999, 0);
     }
 
-    //todo: fix the ray when the ray is oblique (45°) and then goes <45°
     showRectGroupBody() {
-
+        const originX = this.player.sprite.x;
+        const originY = this.player.sprite.y - 30;
+        const angle = this.getAngleRad(originX, originY, this.gunTargetPosition.x, this.gunTargetPosition.y);
+    
+        const step = 35;
+    
         for (let i = 0; i < this.hitAreaRects.length; i++) {
             const rect = this.hitAreaRects[i];
-
-            const angle = this.getAngleRad(this.player.sprite.x, this.player.sprite.y, this.gunTargetPosition.x, this.gunTargetPosition.y);
-
-            /*         Q1_1
-            Q4 | Q1   |    o
-            ---|---   |  o
-            Q3 | Q2   |o______Q1_2
-            */
-
-            let x, y;
-
-            if (-Math.PI / 2 <= angle && 0.0 >= angle) {
-                //Q1
-                if (-Math.PI / 2 <= angle && -Math.PI / 4 >= angle) {
-                    //Q1_1
-                    x = this.player.sprite.x - (i * (35 * (-angle - (Math.PI / 2))));
-                    y = this.player.sprite.y - 30 - (i * 35);
-                } else {
-                    //Q1_2
-                    x = this.player.sprite.x + (i * 35);
-
-                    if (angle < -0.0001) {
-                        y = this.player.sprite.y - 30 + (i * (35 * (angle / (Math.PI / 2))));
-                    } else {
-                        y = this.player.sprite.y - 30;
-                    }
-                }
-
-            } else if (0.0 <= angle && Math.PI / 2 >= angle) {
-                //Q2
-            } else if (Math.PI / 2 <= angle && Math.PI >= angle) {
-                //Q3
-            } else if (-Math.PI / 2 >= angle) {
-                //Q4
-            }
-
+    
+            const distance = (i + 1) * step;
+            const x = originX + Math.cos(angle) * distance;
+            const y = originY + Math.sin(angle) * distance;
+    
             rect.setPosition(x, y);
+    
+            // Reset rotation and make sure physics body is aligned to new position
+            if (rect.body) {
+                (rect.body as Phaser.Physics.Arcade.Body).updateFromGameObject();
+            }
         }
     }
 
@@ -114,8 +92,8 @@ class BathwaterGun {
     update() {
         if (this.isShooting) {
             const angle = this.getAngle(this.player.sprite.x, this.player.sprite.y, this.gunTargetPosition.x, this.gunTargetPosition.y);
-            this.container.setPosition(this.player.sprite.x, this.player.sprite.y - 30);
-            this.container.setAngle(angle - 90);
+            this.container.setPosition(this.player.sprite.x, this.player.sprite.y - 15);
+            this.container.setAngle(angle - 89);
             this.showRectGroupBody();
         } else {
             this.hideRectGroupBody();
