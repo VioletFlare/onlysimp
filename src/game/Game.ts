@@ -1,40 +1,41 @@
 import Phaser from "phaser";
-import sky from '../assets/space3.png'
 import Player from './Player';
+
+import bathroom2 from '../assets/bathroom2.png';
+import map0 from '../assets/maps/map0.json';
 
 class MainScene extends Phaser.Scene
 {
     player: Player;
 
-    preload ()
-    {
+    preloadMap() {
+        this.load.image('bathroom2', bathroom2);
+        this.load.tilemapTiledJSON('map0', map0);
+    }
+
+    preloadPlayer() {
         this.player = new Player();
         this.player.preload(this);
-        this.load.image('sky', sky);
+    }
 
+    preload ()
+    {
+        this.preloadMap();
+        this.preloadPlayer();
+    }
+
+    createMap() {
+        //this.add.image(0, 0, 'bathroom2')
+        const map = this.make.tilemap({ key: 'map0' });
+        const tileset = map.addTilesetImage('bathroom2', 'bathroom2');
+        map.createLayer('ground', tileset, 0, 0);
     }
 
     create ()
     {
         this.physics.world.setBounds(0, 0, 1280, 900, true, true, true, true)
+        this.createMap();
         this.player.create();
-        /*
-        this.add.image(400, 300, 'sky');
-
-        const particles = this.add.particles(0, 0, 'red', {
-            speed: 100,
-            scale: { start: 1, end: 0 },
-            blendMode: 'ADD'
-        });
-
-        const logo = this.physics.add.image(400, 100, 'logo');
-
-        logo.setVelocity(100, 200);
-        logo.setBounce(1, 1);
-        logo.setCollideWorldBounds(true);
-
-        particles.startFollow(logo);
-        */
     }
 
     update() {
