@@ -65,16 +65,16 @@ class Player {
         const cursors = this.scene.input.keyboard.createCursorKeys();
 
         if (cursors.left.isDown) {
-            this.sprite.x -= 8;
+            this.sprite.x -= 16;
             this.sprite.anims.play('walk-left', true)
         } else if (cursors.right.isDown) {
-            this.sprite.x += 8;
+            this.sprite.x += 16;
             this.sprite.anims.play('walk-right', true)
         } else if (cursors.up.isDown) {
-            this.sprite.y -= 8;
+            this.sprite.y -= 16;
             this.sprite.anims.play('walk-up', true)
         } else if (cursors.down.isDown) {
-            this.sprite.y += 8;
+            this.sprite.y += 16;
             this.sprite.anims.play('walk-down', true)
         } else {
             this.sprite.anims.play('idle', true)

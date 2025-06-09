@@ -24,17 +24,17 @@ class MainScene extends Phaser.Scene
         this.preloadPlayer();
     }
 
-
     createMap() {
         //this.add.image(0, 0, 'bathroom2')
         const map = this.make.tilemap({ key: 'map0' });
-        const tileset = map.addTilesetImage('bathroom2');
-        map.createLayer('ground', tileset);
+        const tileset = map.addTilesetImage('bathroom2', 'bathroom2');
+        map.createLayer('ground', tileset, 0, 0);
     }
 
     create ()
     {
         this.physics.world.setBounds(0, 0, 1280, 900, true, true, true, true)
+        this.createMap();
         this.player.create();
     }
 
