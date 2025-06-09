@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 import Player from './Player';
 
-import bathroom2 from 'assets/bathroom2.png';
-import stage0 from 'assets/stage0.json';
+import bathroom2 from '../assets/bathroom2.png';
+import map0 from '../assets/maps/map0.json';
 
 class MainScene extends Phaser.Scene
 {
@@ -10,7 +10,7 @@ class MainScene extends Phaser.Scene
 
     preloadMap() {
         this.load.image('bathroom2', bathroom2);
-        this.load.tilemapTiledJSON('stage0', stage0);
+        this.load.tilemapTiledJSON('map0', map0);
     }
 
     preloadPlayer() {
@@ -26,7 +26,8 @@ class MainScene extends Phaser.Scene
 
 
     createMap() {
-        const map = this.make.tilemap({ key: 'stage0' });
+        //this.add.image(0, 0, 'bathroom2')
+        const map = this.make.tilemap({ key: 'map0' });
         const tileset = map.addTilesetImage('bathroom2');
         map.createLayer('ground', tileset);
     }
